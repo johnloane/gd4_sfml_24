@@ -132,12 +132,19 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="TextureHolder.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="Game.hpp" />
+    <ClInclude Include="ResourceHolder.hpp" />
+    <ClInclude Include="TextureHolder.hpp" />
+    <ClInclude Include="TextureID.hpp" />
     <ClInclude Include="Utility.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ResourceHolder.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

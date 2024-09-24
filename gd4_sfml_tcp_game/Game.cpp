@@ -2,12 +2,11 @@
 #include "Constants.hpp"
 #include "Utility.hpp"
 
-Game::Game()
-	: m_window(sf::VideoMode(640, 480), "SFML Game"), m_player()
+Game::Game(ResourceHolder<TextureID, sf::Texture>& game_textures)
+	: m_window(sf::VideoMode(640, 480), "SFML Game"), m_textures(game_textures), m_player()
 {
-	m_player.setRadius(40.f);
+	m_player.setTexture(m_textures.Get(TextureID::kEagle));
 	m_player.setPosition(100.f, 100.f);
-	m_player.setFillColor(sf::Color::Cyan);
 }
 
 void Game::Run()
