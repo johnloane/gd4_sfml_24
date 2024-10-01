@@ -29,6 +29,7 @@ void World::Update(sf::Time dt)
 		velocity.x = -velocity.x;
 		m_player_aircraft->SetVelocity(velocity);
 	}
+	m_scenegraph.Update(dt);
 }
 
 void World::Draw()
