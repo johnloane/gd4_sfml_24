@@ -1,10 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include "Game.hpp"
+#include "ResourceIdentifiers.hpp"
 #include <iostream>
 
 int main()
 {
-	ResourceHolder<TextureID, sf::Texture> game_textures;
+	TextureHolder game_textures;
 	try
 	{
 		game_textures.Load(TextureID::kEagle, "Media/Textures/Eagle.png");

@@ -139,6 +139,7 @@
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="ResourceHolder.hpp" />
+    <ClInclude Include="ResourceIdentifiers.hpp" />
     <ClInclude Include="TextureHolder.hpp" />
     <ClInclude Include="TextureID.hpp" />
     <ClInclude Include="Utility.hpp" />
