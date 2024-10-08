@@ -44,6 +44,22 @@ sf::Transform SceneNode::GetWorldTransform() const
     return transform;
 }
 
+void SceneNode::OnCommand(const Command& command, sf::Time dt)
+{
+    //Is this command for me? If it is execute
+    //Regardless of answer forward to all of my children
+    if (command.category & GetCategory())
+    {
+        command.action(*this, dt);
+    }
+
+    //Pass it on to my children
+    for (Ptr& child : m_children)
+    {
+        child->OnCommand(command, dt);
+    }
+}
+
 void SceneNode::UpdateCurrent(sf::Time dt)
 {
     //Do nothing here
@@ -77,4 +93,9 @@ void SceneNode::DrawChildren(sf::RenderTarget& target, sf::RenderStates states) 
     {
         child->draw(target, states);
     }
+}
+
+unsigned int SceneNode::GetCategory() const
+{
+    return static_cast<unsigned int>(ReceiverCategories::kScene);
 }

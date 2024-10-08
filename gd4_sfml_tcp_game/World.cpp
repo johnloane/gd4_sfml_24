@@ -20,22 +20,29 @@ void World::Update(sf::Time dt)
 {
 	//Scroll the world
 	m_camera.move(0, m_scrollspeed * dt.asSeconds());
-	sf::Vector2f position = m_player_aircraft->getPosition();
-	sf::Vector2f velocity = m_player_aircraft->GetVelocity();
+	
+	m_player_aircraft->SetVelocity(0.f, 0.f);
 
-	//If the player touches the boundaries flip their x-velocity
-	if (position.x <= m_world_bounds.left + 150.f || position.x >= m_world_bounds.left + m_world_bounds.width - 150.f)
+	//Forward commands to the scenegraph
+	while (!m_command_queue.IsEmpty())
 	{
-		velocity.x = -velocity.x;
-		m_player_aircraft->SetVelocity(velocity);
+		m_scenegraph.OnCommand(m_command_queue.Pop(), dt);
 	}
+	AdaptPlayerVelocity();
+
 	m_scenegraph.Update(dt);
+	AdaptPlayerPosition();
 }
 
 void World::Draw()
 {
 	m_window.setView(m_camera);
 	m_window.draw(m_scenegraph);
+}
+
+CommandQueue& World::GetCommandQueue()
+{
+	return m_command_queue;
 }
 
 void World::LoadTextures()
@@ -79,4 +86,31 @@ void World::BuildScene()
 	std::unique_ptr<Aircraft> right_escort(new Aircraft(AircraftType::kRaptor, m_textures));
 	right_escort->setPosition(80.f, 50.f);
 	m_player_aircraft->AttachChild(std::move(right_escort));
+}
+
+void World::AdaptPlayerPosition()
+{
+	//keep the player on the screen
+	sf::FloatRect view_bounds(m_camera.getCenter() - m_camera.getSize() / 2.f, m_camera.getSize());
+	const float border_distance = 40.f;
+
+	sf::Vector2f position = m_player_aircraft->getPosition();
+	position.x = std::max(position.x, view_bounds.left + border_distance);
+	position.x = std::min(position.x, view_bounds.left + view_bounds.width - border_distance);
+	position.y = std::max(position.y, view_bounds.top + border_distance);
+	position.y = std::min(position.y, view_bounds.top + view_bounds.height -border_distance);
+	m_player_aircraft->setPosition(position);
+}
+
+void World::AdaptPlayerVelocity()
+{
+	sf::Vector2f velocity = m_player_aircraft->GetVelocity();
+
+	//If they are moving diagonally divide by sqrt 2
+	if (velocity.x != 0.f && velocity.y != 0.f)
+	{
+		m_player_aircraft->SetVelocity(velocity / std::sqrt(2.f));
+	}
+	//Add scrolling velocity
+	m_player_aircraft->Accelerate(0.f, m_scrollspeed);
 }

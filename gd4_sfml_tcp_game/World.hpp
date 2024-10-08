@@ -7,6 +7,7 @@
 #include "Aircraft.hpp"
 #include "TextureID.hpp"
 #include "SpriteNode.hpp"
+#include "CommandQueue.hpp"
 
 #include <array>
 
@@ -17,9 +18,13 @@ public:
 	void Update(sf::Time dt);
 	void Draw();
 
+	CommandQueue& GetCommandQueue();
+
 private:
 	void LoadTextures();
 	void BuildScene();
+	void AdaptPlayerPosition();
+	void AdaptPlayerVelocity();
 
 private:
 	sf::RenderWindow& m_window;
@@ -31,5 +36,7 @@ private:
 	sf::Vector2f m_spawn_position;
 	float m_scrollspeed;
 	Aircraft* m_player_aircraft;
+
+	CommandQueue m_command_queue;
 };
 
