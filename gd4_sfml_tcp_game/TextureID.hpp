@@ -4,5 +4,6 @@ enum class TextureID
 	kLandscape,
 	kEagle,
 	kRaptor,
-	kMissile
+	kMissile,
+	kTitleScreen
 };

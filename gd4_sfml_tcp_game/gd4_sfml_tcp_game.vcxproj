@@ -139,6 +139,8 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SpriteNode.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="StateStack.cpp" />
     <ClCompile Include="TextureHolder.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="World.cpp" />
@@ -151,6 +153,7 @@
     <ClInclude Include="CommandQueue.hpp" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="Entity.hpp" />
+    <ClInclude Include="Font.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="ReceiverCategories.hpp" />
@@ -159,6 +162,10 @@
     <ClInclude Include="SceneLayers.hpp" />
     <ClInclude Include="SceneNode.hpp" />
     <ClInclude Include="SpriteNode.hpp" />
+    <ClInclude Include="StackAction.hpp" />
+    <ClInclude Include="State.hpp" />
+    <ClInclude Include="StateID.hpp" />
+    <ClInclude Include="StateStack.hpp" />
     <ClInclude Include="TextureHolder.hpp" />
     <ClInclude Include="TextureID.hpp" />
     <ClInclude Include="Utility.hpp" />
