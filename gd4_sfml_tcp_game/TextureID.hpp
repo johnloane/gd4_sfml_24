@@ -5,5 +5,8 @@ enum class TextureID
 	kEagle,
 	kRaptor,
 	kMissile,
-	kTitleScreen
+	kTitleScreen,
+	kButtonNormal,
+	kButtonSelected,
+	kButtonActivated
 };
