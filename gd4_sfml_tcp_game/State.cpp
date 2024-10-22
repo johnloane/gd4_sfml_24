@@ -24,7 +24,7 @@ void State::RequestStackPop()
     m_stack->PopState();
 }
 
-void State::RequestStakClear()
+void State::RequestStackClear()
 {
     m_stack->ClearStack();
 }
