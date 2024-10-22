@@ -19,9 +19,9 @@ MenuState::MenuState(StateStack& stack, Context context)
     m_options.emplace_back(play_option);
 
     sf::Text exit_option;
-    play_option.setFont(font);
-    play_option.setString("Exit");
-    Utility::CentreOrigin(play_option);
+    exit_option.setFont(font);
+    exit_option.setString("Exit");
+    Utility::CentreOrigin(exit_option);
     exit_option.setPosition(play_option.getPosition() + sf::Vector2f(0.f, 30.f));
     m_options.emplace_back(exit_option);
 

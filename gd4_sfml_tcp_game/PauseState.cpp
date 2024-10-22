@@ -45,7 +45,7 @@ bool PauseState::Update(sf::Time dt)
 
 bool PauseState::HandleEvent(const sf::Event& event)
 {
-    if (event.type != sf::Event::KeyReleased)
+    if (event.type != sf::Event::KeyPressed)
     {
         return false;
     }

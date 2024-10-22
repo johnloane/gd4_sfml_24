@@ -2,14 +2,15 @@
 #include "Game.hpp"
 #include "ResourceIdentifiers.hpp"
 #include <iostream>
+#include "Application.hpp"
 
 int main()
 {
 	//TextureHolder game_textures;
 	try
 	{
-		Game game;
-		game.Run();
+		Application app;
+		app.Run();
 	}
 	catch(std::runtime_error& e)
 	{
