@@ -1,4 +1,6 @@
 #include "Application.hpp"
+#include "GameState.hpp"
+#include "TitleState.hpp"
 
 const sf::Time Application::kTimePerFrame = sf::seconds(1.f/60.f);
 
