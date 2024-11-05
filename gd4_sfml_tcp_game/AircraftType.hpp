@@ -2,5 +2,6 @@
 enum class AircraftType
 {
 	kEagle,
-	kRaptor
+	kRaptor,
+	kAircraftCount
 };

@@ -2,6 +2,12 @@
 #include "TextureID.hpp"
 #include "ResourceHolder.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include "DataTables.hpp"
+
+namespace
+{
+	const std::vector<AircraftData> Table = InitializeAircraftData();
+}
 
 TextureID ToTextureID(AircraftType type)
 {
@@ -17,7 +23,10 @@ TextureID ToTextureID(AircraftType type)
 	return TextureID::kEagle;
 }
 
-Aircraft::Aircraft(AircraftType type, const TextureHolder& textures) : m_type(type), m_sprite(textures.Get(ToTextureID(type)))
+Aircraft::Aircraft(AircraftType type, const TextureHolder& textures)  
+	: Entity(Table[static_cast<int>(type)].m_hitpoints)
+	, m_type(type)
+	, m_sprite(textures.Get(ToTextureID(type)))
 {
 	sf::FloatRect bounds = m_sprite.getLocalBounds();
 	m_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2);
