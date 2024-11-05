@@ -78,4 +78,14 @@ void SettingsState::UpdateLabels()
 
 void SettingsState::AddButtonLabel(Action action, float y, const std::string& text, Context context)
 {
+	m_binding_buttons[static_cast<int>(action)] = std::make_shared<gui::Button>(*context.fonts, *context.textures);
+	m_binding_buttons[static_cast<int>(action)]->setPosition(80.f, y);
+	m_binding_buttons[static_cast<int>(action)]->SetText(text);
+	m_binding_buttons[static_cast<int>(action)]->SetToggle(true);
+
+	m_binding_labels[static_cast<int>(action)] = std::make_shared<gui::Label>("", *context.fonts);
+	m_binding_labels[static_cast<int>(action)]->setPosition(300.f, y + 15.f);
+
+	m_gui_container.Pack(m_binding_buttons[static_cast<int>(action)]);
+	m_gui_container.Pack(m_binding_labels[static_cast<int>(action)]);
 }

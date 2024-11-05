@@ -146,6 +146,7 @@
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneNode.cpp" />
+    <ClCompile Include="SettingsState.cpp" />
     <ClCompile Include="SpriteNode.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateStack.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="ResourceIdentifiers.hpp" />
     <ClInclude Include="SceneLayers.hpp" />
     <ClInclude Include="SceneNode.hpp" />
+    <ClInclude Include="SettingsState.hpp" />
     <ClInclude Include="SpriteNode.hpp" />
     <ClInclude Include="StackAction.hpp" />
     <ClInclude Include="State.hpp" />
