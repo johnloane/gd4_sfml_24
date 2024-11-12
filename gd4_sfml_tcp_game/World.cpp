@@ -50,6 +50,7 @@ void World::LoadTextures()
 {
 	m_textures.Load(TextureID::kEagle, "Media/Textures/Eagle.png");
 	m_textures.Load(TextureID::kRaptor, "Media/Textures/Raptor.png");
+	m_textures.Load(TextureID::kAvenger, "Media/Textures/Avenger.png");
 	m_textures.Load(TextureID::kLandscape, "Media/Textures/Desert.png");
 }
 

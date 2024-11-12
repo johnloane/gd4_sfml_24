@@ -1,4 +1,9 @@
+#define _USE_MATH_DEFINES
 #include "Utility.hpp"
+#include <math.h>
+
+
+
 
 sf::Vector2f Utility::Normalise(const sf::Vector2f& source)
 {
@@ -136,4 +141,9 @@ std::string Utility::toString(sf::Keyboard::Key key)
 	}
 
 	return "";
+}
+
+double Utility::ToRadians(int degrees)
+{
+	return (degrees * M_PI) / 180;
 }
