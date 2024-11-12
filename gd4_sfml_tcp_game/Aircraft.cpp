@@ -23,13 +23,19 @@ TextureID ToTextureID(AircraftType type)
 	return TextureID::kEagle;
 }
 
-Aircraft::Aircraft(AircraftType type, const TextureHolder& textures)  
+Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts)  
 	: Entity(Table[static_cast<int>(type)].m_hitpoints)
 	, m_type(type)
 	, m_sprite(textures.Get(ToTextureID(type)))
+	, m_health_display(nullptr)
 {
 	sf::FloatRect bounds = m_sprite.getLocalBounds();
 	m_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2);
+	std::string* health = new std::string("");
+	std::unique_ptr<TextNode> health_display(new TextNode(fonts, *health));
+	m_health_display = health_display.get();
+	AttachChild(std::move(health_display));
+	UpdateTexts();
 }
 
 unsigned int Aircraft::GetCategory() const
@@ -43,7 +49,20 @@ unsigned int Aircraft::GetCategory() const
 	}
 }
 
+void Aircraft::UpdateTexts()
+{
+	m_health_display->SetString(std::to_string(GetHitPoints()) + "HP");
+	m_health_display->setPosition(0.f, 50.f);
+	m_health_display->setRotation(-getRotation());
+}
+
 void Aircraft::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(m_sprite, states);
+}
+
+void Aircraft::UpdateCurrent(sf::Time dt, CommandQueue& commands)
+{
+	Entity::UpdateCurrent(dt, commands);
+	UpdateTexts();
 }

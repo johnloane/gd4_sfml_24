@@ -1,9 +1,10 @@
 #include "World.hpp"
 
-World::World(sf::RenderWindow& window)
+World::World(sf::RenderWindow& window, FontHolder& font)
 	:m_window(window)
 	,m_camera(window.getDefaultView())
 	,m_textures()
+	,m_fonts(font)
 	,m_scenegraph()
 	,m_scene_layers()
 	,m_world_bounds(0.f,0.f, m_camera.getSize().x, 3000.f)
@@ -73,17 +74,17 @@ void World::BuildScene()
 	m_scene_layers[static_cast<int>(SceneLayers::kBackground)]->AttachChild(std::move(background_sprite));
 
 	//Add the player's aircraft
-	std::unique_ptr<Aircraft> leader(new Aircraft(AircraftType::kEagle, m_textures));
+	std::unique_ptr<Aircraft> leader(new Aircraft(AircraftType::kEagle, m_textures, m_fonts));
 	m_player_aircraft = leader.get();
 	m_player_aircraft->setPosition(m_spawn_position);
 	m_player_aircraft->SetVelocity(40.f, m_scrollspeed);
 	m_scene_layers[static_cast<int>(SceneLayers::kAir)]->AttachChild(std::move(leader));
 
-	std::unique_ptr<Aircraft> left_escort(new Aircraft(AircraftType::kRaptor, m_textures));
+	std::unique_ptr<Aircraft> left_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
 	left_escort->setPosition(-80.f, 50.f);
 	m_player_aircraft->AttachChild(std::move(left_escort));
 
-	std::unique_ptr<Aircraft> right_escort(new Aircraft(AircraftType::kRaptor, m_textures));
+	std::unique_ptr<Aircraft> right_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
 	right_escort->setPosition(80.f, 50.f);
 	m_player_aircraft->AttachChild(std::move(right_escort));
 }

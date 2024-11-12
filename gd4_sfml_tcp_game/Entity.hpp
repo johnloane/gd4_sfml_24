@@ -1,5 +1,7 @@
 #pragma once
 #include "SceneNode.hpp"
+#include "CommandQueue.hpp"
+
 class Entity : public SceneNode
 {
 public:
@@ -16,8 +18,8 @@ public:
 	void Destroy();
 	virtual bool IsDestroyed() const;
 
-private:
-	virtual void UpdateCurrent(sf::Time dt);
+	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands);
+	
 
 private:
 	sf::Vector2f m_velocity;

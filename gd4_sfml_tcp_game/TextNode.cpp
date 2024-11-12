@@ -9,6 +9,7 @@ TextNode::TextNode(const FontHolder& fonts, std::string& text)
 
 void TextNode::SetString(const std::string& text)
 {
+
 	m_text.setString(text);
 	Utility::CentreOrigin(m_text);
 }

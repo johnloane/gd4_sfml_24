@@ -1,7 +1,7 @@
 #include "GameState.hpp"
 #include "Player.hpp"
 
-GameState::GameState(StateStack& stack, Context context) : State(stack, context), m_world(*context.window), m_player(*context.player)
+GameState::GameState(StateStack& stack, Context context) : State(stack, context), m_world(*context.window, *context.fonts), m_player(*context.player)
 {
 }
 
