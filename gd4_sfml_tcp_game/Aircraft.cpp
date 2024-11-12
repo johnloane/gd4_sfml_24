@@ -19,6 +19,9 @@ TextureID ToTextureID(AircraftType type)
 	case AircraftType::kRaptor:
 		return TextureID::kRaptor;
 		break;
+	case AircraftType::kAvenger:
+		return TextureID::kAvenger;
+		break;
 	}
 	return TextureID::kEagle;
 }

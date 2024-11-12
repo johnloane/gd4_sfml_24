@@ -31,6 +31,8 @@ void World::Update(sf::Time dt)
 	}
 	AdaptPlayerVelocity();
 
+	SpawnEnemies();
+
 	m_scenegraph.Update(dt, m_command_queue);
 	AdaptPlayerPosition();
 }
@@ -81,13 +83,15 @@ void World::BuildScene()
 	m_player_aircraft->SetVelocity(40.f, m_scrollspeed);
 	m_scene_layers[static_cast<int>(SceneLayers::kAir)]->AttachChild(std::move(leader));
 
-	std::unique_ptr<Aircraft> left_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
+	AddEnemies();
+
+	/*std::unique_ptr<Aircraft> left_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
 	left_escort->setPosition(-80.f, 50.f);
 	m_player_aircraft->AttachChild(std::move(left_escort));
 
 	std::unique_ptr<Aircraft> right_escort(new Aircraft(AircraftType::kRaptor, m_textures, m_fonts));
 	right_escort->setPosition(80.f, 50.f);
-	m_player_aircraft->AttachChild(std::move(right_escort));
+	m_player_aircraft->AttachChild(std::move(right_escort));*/
 }
 
 void World::AdaptPlayerPosition()
@@ -115,4 +119,58 @@ void World::AdaptPlayerVelocity()
 	}
 	//Add scrolling velocity
 	m_player_aircraft->Accelerate(0.f, m_scrollspeed);
+}
+
+void World::SpawnEnemies()
+{
+	//Spawn an enemy when it is relevant i.e when it is in the Battlefieldboudns
+	while (!m_enemy_spawn_points.empty() && m_enemy_spawn_points.back().m_y > GetBattleFieldBounds().top)
+	{
+		SpawnPoint spawn = m_enemy_spawn_points.back();
+		std::unique_ptr<Aircraft> enemy(new Aircraft(spawn.m_type, m_textures, m_fonts));
+		enemy->setPosition(spawn.m_x, spawn.m_y);
+		enemy->setRotation(180.f);
+		m_scene_layers[static_cast<int>(SceneLayers::kAir)]->AttachChild(std::move(enemy));
+		m_enemy_spawn_points.pop_back();
+	}
+}
+
+void World::AddEnemies()
+{
+	AddEnemy(AircraftType::kRaptor, 0.f, 500.f);
+	AddEnemy(AircraftType::kRaptor, 0.f, 1000.f);
+	AddEnemy(AircraftType::kRaptor, 100.f, 1100.f);
+	AddEnemy(AircraftType::kRaptor, -100.f, 1100.f);
+	AddEnemy(AircraftType::kAvenger, -70.f, 1400.f);
+	AddEnemy(AircraftType::kAvenger, 70.f, 1400.f);
+	AddEnemy(AircraftType::kAvenger, 70.f, 1600.f);
+
+	//Sort the enemies according to y-value so that enemies are checked first
+	std::sort(m_enemy_spawn_points.begin(), m_enemy_spawn_points.end(), [](SpawnPoint lhs, SpawnPoint rhs)
+	{
+		return lhs.m_y < rhs.m_y;
+	});
+
+}
+
+void World::AddEnemy(AircraftType type, float relx, float rely)
+{
+	SpawnPoint spawn(type, m_spawn_position.x + relx, m_spawn_position.y - rely);
+	m_enemy_spawn_points.emplace_back(spawn);
+}
+
+sf::FloatRect World::GetViewBounds() const
+{
+	return sf::FloatRect(m_camera.getCenter() - m_camera.getSize()/2.f, m_camera.getSize());
+}
+
+sf::FloatRect World::GetBattleFieldBounds() const
+{
+	//Return camera bounds + a small area at the top where enemies spawn
+	sf::FloatRect bounds = GetViewBounds();
+	bounds.top -= 100.f;
+	bounds.height += 100.f;
+
+	return bounds;
+
 }
