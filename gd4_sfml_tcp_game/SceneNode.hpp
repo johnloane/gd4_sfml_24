@@ -3,6 +3,7 @@
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics.hpp>
 #include "ReceiverCategories.hpp"
+#include "CommandQueue.hpp"
 #include "Command.hpp"
 
 
@@ -17,7 +18,7 @@ public:
 	void AttachChild(Ptr child);
 	Ptr DetachChild(const SceneNode& node);
 
-	void Update(sf::Time dt);
+	void Update(sf::Time dt, CommandQueue& commands);
 
 	sf::Vector2f GetWorldPosition() const;
 	sf::Transform GetWorldTransform() const;
@@ -25,8 +26,8 @@ public:
 	void OnCommand(const Command& command, sf::Time dt);
 
 private:
-	virtual void UpdateCurrent(sf::Time dt);
-	void UpdateChildren(sf::Time dt);
+	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands);
+	void UpdateChildren(sf::Time dt, CommandQueue& commands);
 
 	//Note draw() is from sf::Drawable and hence the name
 	//Do not be tempted to call this method Draw()

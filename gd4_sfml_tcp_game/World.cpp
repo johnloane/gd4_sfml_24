@@ -31,7 +31,7 @@ void World::Update(sf::Time dt)
 	}
 	AdaptPlayerVelocity();
 
-	m_scenegraph.Update(dt);
+	m_scenegraph.Update(dt, m_command_queue);
 	AdaptPlayerPosition();
 }
 
