@@ -5,7 +5,7 @@
 
 
 
-sf::Vector2f Utility::Normalise(const sf::Vector2f& source)
+sf::Vector2f Utility::UnitVector(const sf::Vector2f& source)
 {
     float length = sqrt((source.x * source.x) + (source.y * source.y));
     if (length != 0)
@@ -146,4 +146,9 @@ std::string Utility::toString(sf::Keyboard::Key key)
 double Utility::ToRadians(int degrees)
 {
 	return (degrees * M_PI) / 180;
+}
+
+double Utility::ToDegrees(double angle)
+{
+	return angle*(180/M_PI);
 }

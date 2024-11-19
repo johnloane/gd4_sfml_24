@@ -1,5 +1,6 @@
 #include "DataTables.hpp"
 #include "AircraftType.hpp"
+#include "ProjectileType.hpp"
 
 std::vector<AircraftData> InitializeAircraftData()
 {
@@ -32,6 +33,24 @@ std::vector<AircraftData> InitializeAircraftData()
     data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(-45.f, 100.f));
     data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(0.f, 50.f));
     data[static_cast<int>(AircraftType::kAvenger)].m_directions.emplace_back(Direction(45.f, 50.f));
+
+    return data;
+}
+
+std::vector<ProjectileData> InitializeProjectileData()
+{
+    std::vector<ProjectileData> data(static_cast<int>(ProjectileType::kProjectileCount));
+    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_damage = 10;
+    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_speed = 300;
+    data[static_cast<int>(ProjectileType::kAlliedBullet)].m_texture = TextureID::kBullet;
+
+    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_damage = 10;
+    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_speed = 300;
+    data[static_cast<int>(ProjectileType::kEnemyBullet)].m_texture = TextureID::kBullet;
+
+    data[static_cast<int>(ProjectileType::kMissile)].m_damage = 200;
+    data[static_cast<int>(ProjectileType::kMissile)].m_speed = 150;
+    data[static_cast<int>(ProjectileType::kMissile)].m_texture = TextureID::kMissile;
 
     return data;
 }
