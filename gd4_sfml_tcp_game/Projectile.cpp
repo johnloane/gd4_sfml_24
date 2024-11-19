@@ -61,6 +61,7 @@ void Projectile::UpdateCurrent(sf::Time dt, CommandQueue& commands)
         setRotation(Utility::ToDegrees(angle) + 90.f);
         SetVelocity(new_velocity);
     }
+    Entity::UpdateCurrent(dt, commands);
 }
 
 void Projectile::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

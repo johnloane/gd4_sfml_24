@@ -90,6 +90,7 @@ void Aircraft::UpdateTexts()
 
 	if (m_missile_display)
 	{
+		m_missile_display->setPosition(0.f, 70.f);
 		if (m_missile_ammo == 0)
 		{
 			m_missile_display->SetString("");

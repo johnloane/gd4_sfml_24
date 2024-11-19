@@ -2,6 +2,7 @@
 #include <vector>
 #include <SFML/System/Time.hpp>
 #include "ResourceIdentifiers.hpp"
+#include <functional>
 
 
 struct Direction
@@ -28,6 +29,13 @@ struct ProjectileData
 	TextureID m_texture;
 };
 
+struct PickupData
+{
+	std::function<void(Aircraft&)> m_action;
+	TextureID m_texture;
+};
+
 std::vector<AircraftData> InitializeAircraftData();
 std::vector<ProjectileData> InitializeProjectileData();
+std::vector<PickupData> InitializePickupData();
 
