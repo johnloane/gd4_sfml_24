@@ -43,6 +43,7 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_is_launching_missile(false)
 	, m_fire_countdown(sf::Time::Zero)
 	, m_missile_ammo(2)
+	, is_marked_for_removal(false)
 
 {
 	Utility::CentreOrigin(m_sprite);
@@ -211,6 +212,16 @@ void Aircraft::CreateProjectile(SceneNode& node, ProjectileType type, float x_of
 	projectile->setPosition(GetWorldPosition() + offset * sign);
 	projectile->SetVelocity(velocity * sign);
 	node.AttachChild(std::move(projectile));
+}
+
+sf::FloatRect Aircraft::GetBoundingRect() const
+{
+	return GetWorldTransform().transformRect(m_sprite.getGlobalBounds());
+}
+
+bool Aircraft::IsMarkedForRemoval() const
+{
+	return m_is_marked_for_removal;
 }
 
 void Aircraft::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

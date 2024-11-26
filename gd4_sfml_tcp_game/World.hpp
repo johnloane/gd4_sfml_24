@@ -20,6 +20,9 @@ public:
 
 	CommandQueue& GetCommandQueue();
 
+	bool HasAlivePlayer() const;
+	bool HasPlayerReachedEnd() const;
+
 private:
 	void LoadTextures();
 	void BuildScene();
@@ -31,6 +34,8 @@ private:
 	void AddEnemy(AircraftType type, float relx, float rely);
 	sf::FloatRect GetViewBounds() const;
 	sf::FloatRect GetBattleFieldBounds() const;
+
+	void HandleCollisions();
 
 
 private:
@@ -60,5 +65,6 @@ private:
 	CommandQueue m_command_queue;
 
 	std::vector<SpawnPoint> m_enemy_spawn_points;
+	std::vector<Aircraft*> m_active_enemies;
 };
 

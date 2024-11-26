@@ -48,6 +48,16 @@ CommandQueue& World::GetCommandQueue()
 	return m_command_queue;
 }
 
+bool World::HasAlivePlayer() const
+{
+	return !m_player_aircraft->IsMarkedForRemoval();
+}
+
+bool World::HasPlayerReachedEnd() const
+{
+	return !m_world_bounds.contains(m_player_aircraft->getPosition());
+}
+
 void World::LoadTextures()
 {
 	m_textures.Load(TextureID::kEagle, "Media/Textures/Eagle.png");
@@ -175,4 +185,8 @@ sf::FloatRect World::GetBattleFieldBounds() const
 
 	return bounds;
 
+}
+
+void World::HandleCollisions()
+{
 }

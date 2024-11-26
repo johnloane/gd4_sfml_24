@@ -167,3 +167,8 @@ int Utility::RandomInt(int exclusive_max)
 	std::uniform_int_distribution<> distr(0, exclusive_max - 1);
 	return distr(RandomEngine);
 }
+
+int Utility::Length(sf::Vector2f vector)
+{
+	return sqrtf(powf(vector.x, 2) + powf(vector.y, 2));
+}

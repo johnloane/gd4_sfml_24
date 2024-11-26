@@ -11,7 +11,7 @@ public:
 	bool IsGuided() const;
 
 	unsigned int GetCategory() const override;
-	//sf::FloatRect GetBoundingRect() const override;
+	sf::FloatRect GetBoundingRect() const override;
 	float GetMaxSpeed() const;
 	float GetDamage() const;
 

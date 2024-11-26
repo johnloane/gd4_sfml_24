@@ -34,11 +34,11 @@ unsigned int Projectile::GetCategory() const
     else
         return static_cast<int>(ReceiverCategories::kAlliedProjectile);
 }
-
-//sf::FloatRect Projectile::GetBoundingRect() const
-//{
-//    return GetWorldTransform().transformRect(m_sprite.getGlobalBounds());
-//}
+ 
+sf::FloatRect Projectile::GetBoundingRect() const
+{
+    return GetWorldTransform().transformRect(m_sprite.getGlobalBounds());
+}
 
 float Projectile::GetMaxSpeed() const
 {
