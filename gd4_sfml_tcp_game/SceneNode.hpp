@@ -6,12 +6,15 @@
 #include "CommandQueue.hpp"
 #include "Command.hpp"
 
+#include <set>
+
 
 
 class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable
 {
 public:
 	typedef std::unique_ptr<SceneNode> Ptr;
+	typedef std::pair<SceneNode*, SceneNode*> Pair;
 
 public:
 	SceneNode();
@@ -25,6 +28,12 @@ public:
 
 	void OnCommand(const Command& command, sf::Time dt);
 
+	virtual sf::FloatRect GetBoundingRect();
+	void DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates states, sf::FloatRect& rect) const;
+
+	void CheckSceneCollision(SceneNode& scene_graph, std::set<Pair>& collison_pairs);
+	void RemoveWrecks();
+
 private:
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands);
 	void UpdateChildren(sf::Time dt, CommandQueue& commands);
@@ -36,8 +45,13 @@ private:
 	void DrawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual unsigned int GetCategory() const;
 
+	void CheckNodeCollision(SceneNode& node, std::set<Pair>& collison_pairs);
+	virtual bool IsDestroyed() const;
+	virtual bool IsMarkedForRemoval() const;
+
 private:
 	std::vector<Ptr> m_children;
 	SceneNode* m_parent;
+	ReceiverCategories m_default_category;
 };
 

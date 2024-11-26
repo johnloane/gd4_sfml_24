@@ -13,6 +13,10 @@ public:
 	Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts);
 	unsigned int GetCategory() const override;
 
+	void IncreaseFireRate();
+	void IncreaseFireSpread();
+	void CollectMissile(unsigned int count);
+
 	void UpdateTexts();
 	void UpdateMovementPattern(sf::Time dt);
 
@@ -27,6 +31,8 @@ private:
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
 	void CheckProjectileLaunch(sf::Time dt, CommandQueue& commands);
 	bool IsAllied() const;
+	void CreatePickup(SceneNode& node, const TextureHolder& textures) const;
+	void CheckPickupDrop(CommandQueue& commands);
 
 private:
 	AircraftType m_type;
@@ -38,8 +44,10 @@ private:
 
 	Command m_fire_command;
 	Command m_missile_command;
+	Command m_drop_pickup_command;
 
 	unsigned int m_fire_rate;
+	unsigned int m_spread_level;
 	unsigned int m_missile_ammo;
 
 	bool m_is_firing;

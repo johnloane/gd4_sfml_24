@@ -145,6 +145,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PauseState.cpp" />
+    <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="SceneNode.cpp" />
@@ -178,6 +179,8 @@
     <ClInclude Include="MenuOptions.hpp" />
     <ClInclude Include="MenuState.hpp" />
     <ClInclude Include="PauseState.hpp" />
+    <ClInclude Include="Pickup.hpp" />
+    <ClInclude Include="PickupType.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Projectile.hpp" />
     <ClInclude Include="ProjectileType.hpp" />

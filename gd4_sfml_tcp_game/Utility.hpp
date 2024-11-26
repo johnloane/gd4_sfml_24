@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <random>
 class Utility
 {
 	public:
@@ -9,5 +10,6 @@ class Utility
 		static std::string toString(sf::Keyboard::Key key);
 		static double ToRadians(int degrees);
 		static double ToDegrees(double angle);
+		static int RandomInt(int exclusive_max);
 };
 

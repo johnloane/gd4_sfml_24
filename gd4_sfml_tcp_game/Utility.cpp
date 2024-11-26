@@ -3,6 +3,15 @@
 #include <math.h>
 
 
+namespace
+{
+	std::default_random_engine CreateRandomEngine()
+	{
+		auto seed = static_cast<unsigned long>(std::time(nullptr));
+		return std::default_random_engine(seed);
+	}
+	auto RandomEngine = CreateRandomEngine();
+}
 
 
 sf::Vector2f Utility::UnitVector(const sf::Vector2f& source)
@@ -151,4 +160,10 @@ double Utility::ToRadians(int degrees)
 double Utility::ToDegrees(double angle)
 {
 	return angle*(180/M_PI);
+}
+
+int Utility::RandomInt(int exclusive_max)
+{
+	std::uniform_int_distribution<> distr(0, exclusive_max - 1);
+	return distr(RandomEngine);
 }
