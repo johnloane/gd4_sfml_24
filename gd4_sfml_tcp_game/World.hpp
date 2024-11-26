@@ -35,6 +35,10 @@ private:
 	sf::FloatRect GetViewBounds() const;
 	sf::FloatRect GetBattleFieldBounds() const;
 
+	void DestroyEntitiesOutsideView();
+	void GuideMissiles();
+
+
 	void HandleCollisions();
 
 

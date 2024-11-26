@@ -33,6 +33,7 @@ public:
 
 	void CheckSceneCollision(SceneNode& scene_graph, std::set<Pair>& collison_pairs);
 	void RemoveWrecks();
+	virtual unsigned int GetCategory() const;
 
 private:
 	virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands);
@@ -43,7 +44,7 @@ private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	void DrawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
-	virtual unsigned int GetCategory() const;
+	
 
 	void CheckNodeCollision(SceneNode& node, std::set<Pair>& collison_pairs);
 	virtual bool IsDestroyed() const;

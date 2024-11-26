@@ -1,11 +1,13 @@
 #include "World.hpp"
+#include "Pickup.hpp"
+#include "Projectile.hpp"
 
 World::World(sf::RenderWindow& window, FontHolder& font)
 	:m_window(window)
 	,m_camera(window.getDefaultView())
 	,m_textures()
 	,m_fonts(font)
-	,m_scenegraph()
+	,m_scenegraph(ReceiverCategories::kNone)
 	,m_scene_layers()
 	,m_world_bounds(0.f,0.f, m_camera.getSize().x, 3000.f)
 	,m_spawn_position(m_camera.getSize().x/2.f, m_world_bounds.height - m_camera.getSize().y/2.f)
@@ -73,7 +75,8 @@ void World::BuildScene()
 	//Initialize the different layers
 	for (std::size_t i = 0; i < static_cast<int>(SceneLayers::kLayerCount); ++i)
 	{
-		SceneNode::Ptr layer(new SceneNode());
+		ReceiverCategories category = (i == static_cast<int>(SceneLayers::kAir)) ? ReceiverCategories::kScene : ReceiverCategories::kNone;
+		SceneNode::Ptr layer(new SceneNode(category));
 		m_scene_layers[i] = layer.get();
 		m_scenegraph.AttachChild(std::move(layer));
 	}
@@ -187,6 +190,117 @@ sf::FloatRect World::GetBattleFieldBounds() const
 
 }
 
+void World::DestroyEntitiesOutsideView()
+{
+	Command command;
+	command.category = static_cast<int>(ReceiverCategories::kEnemyAircraft) | static_cast<int>(ReceiverCategories::kProjectile);
+	command.action = DerivedAction<Entity>([this](Entity& e, sf::Time dt)
+		{
+			//Does the object intersect with the battlefield
+			if (!GetBattleFieldBounds().intersects(e.GetBoundingRect()))
+			{
+				e.Destroy();
+			}
+		});
+	m_command_queue.Push(command);
+}
+
+void World::GuideMissiles()
+{
+	//Target the closest enemy in the world
+	Command enemyCollector;
+	enemyCollector.category = static_cast<int>(ReceiverCategories::kEnemyAircraft);
+	enemyCollector.action = DerivedAction<Aircraft>([this](Aircraft& enemy, sf::Time)
+		{
+			if (!enemy.IsDestroyed())
+			{
+				m_active_enemies.emplace_back(&enemy);
+			}
+		});
+
+	Command missileGuider;
+	missileGuider.category = static_cast<int>(ReceiverCategories::kAlliedProjectile);
+	missileGuider.action = DerivedAction<Projectile>([this](Projectile& missile, sf::Time dt)
+		{
+			if (!missile.IsGuided())
+			{
+				return;
+			}
+
+			float min_distance = std::numeric_limits<float>::max();
+			Aircraft* closest_enemy = nullptr;
+
+			for (Aircraft* enemy : m_active_enemies)
+			{
+				float enemy_distance = Distance(missile, *enemy);
+				if (enemy_distance < min_distance)
+				{
+					closest_enemy = enemy;
+					min_distance = enemy_distance;
+				}
+			}
+
+			if (closest_enemy)
+			{
+				missile.GuideTowards(closest_enemy->GetWorldPosition());
+			}
+		});
+
+	m_command_queue.Push(enemyCollector);
+	m_command_queue.Push(missileGuider);
+	m_active_enemies.clear();
+}
+
+bool MatchesCategories(SceneNode::Pair& colliders, ReceiverCategories type1, ReceiverCategories type2)
+{
+	unsigned int category1 = colliders.first->GetCategory();
+	unsigned int category2 = colliders.second->GetCategory();
+
+	if (static_cast<int>(type1) & category1 && static_cast<int>(type2) & category2)
+	{
+		return true;
+	}
+	else if (static_cast<int>(type1) & category2 && static_cast<int>(type2) & category1)
+	{ 
+		std::swap(colliders.first, colliders.second);
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
 void World::HandleCollisions()
 {
+	std::set<SceneNode::Pair> collision_pairs;
+	m_scenegraph.CheckSceneCollision(m_scenegraph, collision_pairs);
+	for (SceneNode::Pair pair : collision_pairs)
+	{
+		if (MatchesCategories(pair, ReceiverCategories::kPlayerAircraft, ReceiverCategories::kEnemyProjectile))
+		{
+			auto& player = static_cast<Aircraft&>(*pair.first);
+			auto& enemy = static_cast<Aircraft&>(*pair.second);
+			//Collision response
+			player.Damage(enemy.GetHitPoints());
+			enemy.Destroy();
+		}
+
+		else if (MatchesCategories(pair, ReceiverCategories::kPlayerAircraft, ReceiverCategories::kPickup))
+		{
+			auto& player = static_cast<Aircraft&>(*pair.first);
+			auto& pickup = static_cast<Pickup&>(*pair.second);
+			//Collision response
+			pickup.Apply(player);
+			pickup.Destroy();
+		}
+		else if (MatchesCategories(pair, ReceiverCategories::kPlayerAircraft, ReceiverCategories::kEnemyProjectile) || MatchesCategories(pair, ReceiverCategories::kEnemyAircraft, ReceiverCategories::kAlliedProjectile))
+		{
+			auto& aircraft = static_cast<Aircraft&>(*pair.first);
+			auto& projectile = static_cast<Projectile&>(*pair.second);
+			//Collision response
+			aircraft.Damage(projectile.GetDamage());
+			projectile.Destroy();
+		}
+	}
 }

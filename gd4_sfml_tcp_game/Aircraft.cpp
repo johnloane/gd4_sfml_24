@@ -43,7 +43,7 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_is_launching_missile(false)
 	, m_fire_countdown(sf::Time::Zero)
 	, m_missile_ammo(2)
-	, is_marked_for_removal(false)
+	, m_is_marked_for_removal(false)
 
 {
 	Utility::CentreOrigin(m_sprite);

@@ -3,6 +3,7 @@
 #include <SFML/System/Time.hpp>
 #include "ResourceIdentifiers.hpp"
 #include <functional>
+#include "Aircraft.hpp"
 
 
 struct Direction
