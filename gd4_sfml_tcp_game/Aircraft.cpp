@@ -32,7 +32,7 @@ TextureID ToTextureID(AircraftType type)
 Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontHolder& fonts)  
 	: Entity(Table[static_cast<int>(type)].m_hitpoints)
 	, m_type(type)
-	, m_sprite(textures.Get(ToTextureID(type)))
+	, m_sprite(textures.Get(Table[static_cast<int>(type)].m_texture), Table[static_cast<int>(type)].m_texture_rect)
 	, m_health_display(nullptr)
 	, m_missile_display(nullptr)
 	, m_distance_travelled(0.f)
@@ -102,7 +102,7 @@ void Aircraft::IncreaseFireRate()
 
 void Aircraft::IncreaseFireSpread()
 {
-	if (m_fire_rate < 3)
+	if (m_spread_level < 3)
 	{
 		++m_spread_level;
 	}

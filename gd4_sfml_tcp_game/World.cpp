@@ -81,6 +81,13 @@ void World::LoadTextures()
 	m_textures.Load(TextureID::kFireSpread, "Media/Textures/FireSpread.png");
 	m_textures.Load(TextureID::kFireRate, "Media/Textures/FireRate.png");
 	m_textures.Load(TextureID::kFinishLine, "Media/Textures/FinishLine.png");
+
+	m_textures.Load(TextureID::kEntities, "Media/Textures/Entities.png");
+	m_textures.Load(TextureID::kJungle, "Media/Textures/Jungle.png");
+	m_textures.Load(TextureID::kExplosion, "Media/Textures/Explosion.png");
+	m_textures.Load(TextureID::kParticle, "Media/Textures/Particle.png");
+
+
 }
 
 void World::BuildScene()
