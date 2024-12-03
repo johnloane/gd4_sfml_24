@@ -22,7 +22,12 @@ unsigned int Pickup::GetCategory() const
     return static_cast<int>(ReceiverCategories::kPickup);
 }
 
-void Pickup::Apply(Aircraft& player)
+sf::FloatRect Pickup::GetBoundingRect() const
+{
+    return GetWorldTransform().transformRect(m_sprite.getGlobalBounds());
+}
+
+void Pickup::Apply(Aircraft& player) const
 {
     Table[static_cast<int>(m_type)].m_action(player);
 }

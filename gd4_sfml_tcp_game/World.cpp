@@ -26,12 +26,19 @@ void World::Update(sf::Time dt)
 	
 	m_player_aircraft->SetVelocity(0.f, 0.f);
 
+	DestroyEntitiesOutsideView();
+	GuideMissiles();
+
 	//Forward commands to the scenegraph
 	while (!m_command_queue.IsEmpty())
 	{
 		m_scenegraph.OnCommand(m_command_queue.Pop(), dt);
 	}
 	AdaptPlayerVelocity();
+
+	HandleCollisions();
+
+	m_scenegraph.RemoveWrecks();
 
 	SpawnEnemies();
 
@@ -68,6 +75,11 @@ void World::LoadTextures()
 	m_textures.Load(TextureID::kLandscape, "Media/Textures/Desert.png");
 	m_textures.Load(TextureID::kBullet, "Media/Textures/Bullet.png");
 	m_textures.Load(TextureID::kMissile, "Media/Textures/Missile.png");
+
+	m_textures.Load(TextureID::kHealthRefill, "Media/Textures/HealthRefill.png");
+	m_textures.Load(TextureID::kMissileRefill, "Media/Textures/MissileRefill.png");
+	m_textures.Load(TextureID::kFireSpread, "Media/Textures/FireSpread.png");
+	m_textures.Load(TextureID::kFireRate, "Media/Textures/FireRate.png");
 }
 
 void World::BuildScene()
@@ -277,7 +289,7 @@ void World::HandleCollisions()
 	m_scenegraph.CheckSceneCollision(m_scenegraph, collision_pairs);
 	for (SceneNode::Pair pair : collision_pairs)
 	{
-		if (MatchesCategories(pair, ReceiverCategories::kPlayerAircraft, ReceiverCategories::kEnemyProjectile))
+		if (MatchesCategories(pair, ReceiverCategories::kPlayerAircraft, ReceiverCategories::kEnemyAircraft))
 		{
 			auto& player = static_cast<Aircraft&>(*pair.first);
 			auto& enemy = static_cast<Aircraft&>(*pair.second);

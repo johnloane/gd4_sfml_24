@@ -17,7 +17,7 @@ public:
 	typedef std::pair<SceneNode*, SceneNode*> Pair;
 
 public:
-	SceneNode(ReceiverCategories cateogry);
+	SceneNode(ReceiverCategories cateogry = ReceiverCategories::kNone);
 	void AttachChild(Ptr child);
 	Ptr DetachChild(const SceneNode& node);
 

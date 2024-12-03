@@ -234,6 +234,8 @@ void Aircraft::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 	if (IsDestroyed())
 	{
 		CheckPickupDrop(commands);
+		m_is_marked_for_removal = true;
+		return;
 	}
 
 	Entity::UpdateCurrent(dt, commands);
@@ -289,7 +291,7 @@ void Aircraft::CreatePickup(SceneNode& node, const TextureHolder& textures) cons
 void Aircraft::CheckPickupDrop(CommandQueue& commands)
 {
 	//TODO Get rid of the magic number 3 here 
-	if (!IsAllied() && Utility::RandomInt(3) == 0)
+	if (!IsAllied())
 	{
 		commands.Push(m_drop_pickup_command);
 	}
