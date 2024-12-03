@@ -80,6 +80,7 @@ void World::LoadTextures()
 	m_textures.Load(TextureID::kMissileRefill, "Media/Textures/MissileRefill.png");
 	m_textures.Load(TextureID::kFireSpread, "Media/Textures/FireSpread.png");
 	m_textures.Load(TextureID::kFireRate, "Media/Textures/FireRate.png");
+	m_textures.Load(TextureID::kFinishLine, "Media/Textures/FinishLine.png");
 }
 
 void World::BuildScene()
@@ -102,6 +103,12 @@ void World::BuildScene()
 	std::unique_ptr<SpriteNode> background_sprite(new SpriteNode(texture, textureRect));
 	background_sprite->setPosition(m_world_bounds.left, m_world_bounds.top);
 	m_scene_layers[static_cast<int>(SceneLayers::kBackground)]->AttachChild(std::move(background_sprite));
+
+	//Add the finish line
+	sf::Texture& finish_texture = m_textures.Get(TextureID::kFinishLine);
+	std::unique_ptr<SpriteNode> finish_sprite(new SpriteNode(finish_texture));
+	finish_sprite->setPosition(0.f, -76.f);
+	m_scene_layers[static_cast<int>(SceneLayers::kBackground)]->AttachChild(std::move(finish_sprite));
 
 	//Add the player's aircraft
 	std::unique_ptr<Aircraft> leader(new Aircraft(AircraftType::kEagle, m_textures, m_fonts));

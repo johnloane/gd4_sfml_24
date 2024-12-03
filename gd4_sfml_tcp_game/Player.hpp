@@ -2,6 +2,7 @@
 #include <SFML/Window/Event.hpp>
 #include "Action.hpp"
 #include "CommandQueue.hpp"
+#include "MissionStatus.hpp"
 #include <map>
 
 class Command;
@@ -16,6 +17,8 @@ public:
 
 	void AssignKey(Action action, sf::Keyboard::Key key);
 	sf::Keyboard::Key GetAssignedKey(Action action) const;
+	void SetMissionStatus(MissionStatus status);
+	MissionStatus GetMissionStatus() const;
 
 private:
 	void InitialiseActions();
@@ -24,6 +27,7 @@ private:
 private:
 	std::map<sf::Keyboard::Key, Action> m_key_binding;
 	std::map<Action, Command> m_action_binding;
+	MissionStatus m_current_mission_status;
 
 };
 
