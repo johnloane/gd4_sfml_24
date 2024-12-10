@@ -2,6 +2,7 @@
 enum class SceneLayers
 {
 	kBackground,
-	kAir,
+	kLowerAir,
+	kUpperAir,
 	kLayerCount
 };

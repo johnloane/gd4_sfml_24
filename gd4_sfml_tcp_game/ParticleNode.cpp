@@ -2,6 +2,9 @@
 #include "DataTables.hpp"
 #include "ResourceHolder.hpp"
 
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Texture.hpp>
+
 namespace
 {
     const std::vector<ParticleData> Table = InitializeParticleData();
@@ -67,10 +70,35 @@ void ParticleNode::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states
     target.draw(m_vertex_array, states);
 }
 
-void ParticleNode::AddVertex(float worldX, float worldY, float texCoordX, float textCoordY, const sf::Color& color) const
+void ParticleNode::AddVertex(float worldX, float worldY, float texCoordX, float texCoordY, const sf::Color& color) const
 {
+    sf::Vertex vertex;
+    vertex.position = sf::Vector2f(worldX, worldY);
+    vertex.texCoords = sf::Vector2f(texCoordX, texCoordY);
+    vertex.color = color;
+
+    m_vertex_array.append(vertex);
 }
 
 void ParticleNode::ComputeVertices() const
 {
+    sf::Vector2f size(m_texture.getSize());
+    sf::Vector2f half = size / 2.f;
+
+    m_vertex_array.clear();
+
+    for (const Particle& particle : m_particles)
+    {
+        sf::Vector2f pos = particle.m_position;
+        sf::Color color = particle.m_color;
+
+        float ratio = particle.m_lifetime.asSeconds() / Table[static_cast<int>(m_type)].m_lifetime.asSeconds();
+        color.a = static_cast<sf::Uint8>(255 * std::max(ratio, 0.f));
+
+        AddVertex(pos.x - half.x, pos.y - half.y, 0.f, 0.f, color);
+        AddVertex(pos.x + half.x, pos.y - half.y, size.x, 0.f, color);
+        AddVertex(pos.x + half.x, pos.y + half.y, size.x, size.y, color);
+        AddVertex(pos.x - half.x, pos.y + half.y, 0.f, size.y, color);
+    }
+
 }

@@ -138,6 +138,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Container.cpp" />
     <ClCompile Include="DataTables.cpp" />
+    <ClCompile Include="EmitterNode.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameOverState.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="Container.hpp" />
     <ClInclude Include="DataTables.hpp" />
+    <ClInclude Include="EmitterNode.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Font.hpp" />
     <ClInclude Include="Game.hpp" />

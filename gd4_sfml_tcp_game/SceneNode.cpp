@@ -118,6 +118,8 @@ void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
     //Draw the node and its children with the changed transform
     DrawCurrent(target, states);
     DrawChildren(target, states);
+    sf::FloatRect rect = GetBoundingRect();
+    DrawBoundingRect(target, states, rect);
 }
 
 void SceneNode::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
