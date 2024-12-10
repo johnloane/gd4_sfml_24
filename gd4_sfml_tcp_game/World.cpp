@@ -103,7 +103,7 @@ void World::BuildScene()
 	}
 
 	//Prepare the background
-	sf::Texture& texture = m_textures.Get(TextureID::kLandscape);
+	sf::Texture& texture = m_textures.Get(TextureID::kJungle);
 	sf::IntRect textureRect(m_world_bounds);
 	texture.setRepeated(true);
 

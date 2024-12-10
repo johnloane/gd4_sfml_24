@@ -33,6 +33,7 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	: Entity(Table[static_cast<int>(type)].m_hitpoints)
 	, m_type(type)
 	, m_sprite(textures.Get(Table[static_cast<int>(type)].m_texture), Table[static_cast<int>(type)].m_texture_rect)
+	, m_explosion(textures.Get(TextureID::kExplosion))
 	, m_health_display(nullptr)
 	, m_missile_display(nullptr)
 	, m_distance_travelled(0.f)
@@ -44,9 +45,15 @@ Aircraft::Aircraft(AircraftType type, const TextureHolder& textures, const FontH
 	, m_fire_countdown(sf::Time::Zero)
 	, m_missile_ammo(2)
 	, m_is_marked_for_removal(false)
+	, m_show_explosion(true)
+	, m_spawned_pickup(false)
 
 {
+	m_explosion.SetFrameSize(sf::Vector2i(256, 256));
+	m_explosion.SetNumFrames(16);
+	m_explosion.SetDuration(sf::seconds(1));
 	Utility::CentreOrigin(m_sprite);
+	Utility::CentreOrigin(m_explosion);
 
 	m_fire_command.category = static_cast<int>(ReceiverCategories::kScene);
 	m_fire_command.action = [this, &textures](SceneNode& node, sf::Time dt)
@@ -210,7 +217,7 @@ void Aircraft::CreateProjectile(SceneNode& node, ProjectileType type, float x_of
 
 	float sign = IsAllied() ? -1.f : 1.f;
 	projectile->setPosition(GetWorldPosition() + offset * sign);
-	projectile->SetVelocity(velocity * sign);
+	projectile->SetVelocity(velocity* sign);
 	node.AttachChild(std::move(projectile));
 }
 
@@ -221,12 +228,19 @@ sf::FloatRect Aircraft::GetBoundingRect() const
 
 bool Aircraft::IsMarkedForRemoval() const
 {
-	return m_is_marked_for_removal;
+	return IsDestroyed() && (m_explosion.IsFinished() || !m_show_explosion);
 }
 
 void Aircraft::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(m_sprite, states);
+	if (IsDestroyed() && m_show_explosion)
+	{
+		target.draw(m_explosion, states);
+	}
+	else
+	{
+		target.draw(m_sprite, states);
+	}
 }
 
 void Aircraft::UpdateCurrent(sf::Time dt, CommandQueue& commands)
@@ -234,13 +248,15 @@ void Aircraft::UpdateCurrent(sf::Time dt, CommandQueue& commands)
 	if (IsDestroyed())
 	{
 		CheckPickupDrop(commands);
-		m_is_marked_for_removal = true;
+		m_explosion.Update(dt);
 		return;
 	}
 
 	Entity::UpdateCurrent(dt, commands);
 	UpdateTexts();
 	UpdateMovementPattern(dt);
+
+	UpdateRollAnimation();
 
 	//Check if bullets or misiles are fired
 	CheckProjectileLaunch(dt, commands);
@@ -291,8 +307,29 @@ void Aircraft::CreatePickup(SceneNode& node, const TextureHolder& textures) cons
 void Aircraft::CheckPickupDrop(CommandQueue& commands)
 {
 	//TODO Get rid of the magic number 3 here 
-	if (!IsAllied())
+	if (!IsAllied() && Utility::RandomInt(3) == 0 && !m_spawned_pickup)
 	{
 		commands.Push(m_drop_pickup_command);
+	}
+	m_spawned_pickup = true;
+}
+
+void Aircraft::UpdateRollAnimation()
+{
+	if (Table[static_cast<int>(m_type)].m_has_roll_animation)
+	{
+		sf::IntRect textureRect = Table[static_cast<int>(m_type)].m_texture_rect;
+
+		//Roll left: Texture rect is offset once
+		if (GetVelocity().x < 0.f)
+		{
+			textureRect.left += textureRect.width;
+		}
+		else if (GetVelocity().x > 0.f)
+		{
+			textureRect.left += 2 * textureRect.width;
+		}
+		m_sprite.setTextureRect(textureRect);
+
 	}
 }

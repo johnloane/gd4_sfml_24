@@ -6,6 +6,7 @@
 #include "Utility.hpp"
 #include "ProjectileType.hpp"
 #include <SFML/Graphics/Sprite.hpp>
+#include "Animation.hpp"
 
 class Aircraft : public Entity
 {
@@ -36,10 +37,13 @@ private:
 	bool IsAllied() const;
 	void CreatePickup(SceneNode& node, const TextureHolder& textures) const;
 	void CheckPickupDrop(CommandQueue& commands);
+	void UpdateRollAnimation();
 
 private:
 	AircraftType m_type;
 	sf::Sprite m_sprite;
+	Animation m_explosion;
+
 	TextNode* m_health_display;
 	TextNode* m_missile_display;
 	float m_distance_travelled;
@@ -58,6 +62,8 @@ private:
 	sf::Time m_fire_countdown;
 
 	bool m_is_marked_for_removal;
+	bool m_show_explosion;
+	bool m_spawned_pickup;
 
 };
 

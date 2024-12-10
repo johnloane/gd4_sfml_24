@@ -39,6 +39,13 @@ void Utility::CentreOrigin(sf::Text& text)
     text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
 }
 
+void Utility::CentreOrigin(Animation& animation)
+{
+	sf::FloatRect bounds = animation.GetLocalBounds();
+	animation.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
+}
+
+
 std::string Utility::toString(sf::Keyboard::Key key)
 {
 #define KEYTOSTRING_CASE(KEY) case sf::Keyboard::KEY: return #KEY;
