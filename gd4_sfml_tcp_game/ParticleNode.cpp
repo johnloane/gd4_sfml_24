@@ -4,7 +4,7 @@
 
 namespace
 {
-    const std::vector<ParticleData> Table = InitialializeParticleData();
+    const std::vector<ParticleData> Table = InitializeParticleData();
 }
 
 ParticleNode::ParticleNode(ParticleType type, const TextureHolder& textures)
