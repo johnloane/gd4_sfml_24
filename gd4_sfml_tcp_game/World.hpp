@@ -8,13 +8,14 @@
 #include "TextureID.hpp"
 #include "SpriteNode.hpp"
 #include "CommandQueue.hpp"
+#include "BloomEffect.hpp"
 
 #include <array>
 
 class World : private sf::NonCopyable
 {
 public:
-	explicit World(sf::RenderWindow& window, FontHolder& font);
+	explicit World(sf::RenderTarget& target, FontHolder& font);
 	void Update(sf::Time dt);
 	void Draw();
 
@@ -55,7 +56,8 @@ private:
 	};
 
 private:
-	sf::RenderWindow& m_window;
+	sf::RenderTarget& m_target;
+	sf::RenderTexture m_scene_texture;
 	sf::View m_camera;
 	TextureHolder m_textures;
 	FontHolder& m_fonts;
@@ -70,5 +72,7 @@ private:
 
 	std::vector<SpawnPoint> m_enemy_spawn_points;
 	std::vector<Aircraft*> m_active_enemies;
+
+	BloomEffect m_bloom_effect;
 };
 

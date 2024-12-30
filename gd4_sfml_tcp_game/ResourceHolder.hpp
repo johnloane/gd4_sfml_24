@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <cassert>
+#include <stdexcept>
 
 template<typename Identifier, typename Resource>
 class ResourceHolder

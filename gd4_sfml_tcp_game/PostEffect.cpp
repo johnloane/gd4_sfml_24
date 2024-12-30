@@ -3,13 +3,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 
-PostEffect::~PostEffect()
-{
-}
-
-void PostEffect::Apply(const sf::RenderTexture& input, sf::RenderTarget& output)
-{
-}
+PostEffect::~PostEffect() = default;
 
 bool PostEffect::IsSupported()
 {
