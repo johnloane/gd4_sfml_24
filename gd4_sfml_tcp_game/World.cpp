@@ -2,12 +2,14 @@
 #include "Pickup.hpp"
 #include "Projectile.hpp"
 #include "ParticleNode.hpp"
+#include "SoundNode.hpp"
 
-World::World(sf::RenderTarget& output_target, FontHolder& font)
+World::World(sf::RenderTarget& output_target, FontHolder& font, SoundPlayer& sounds)
 	:m_target(output_target)
 	,m_camera(output_target.getDefaultView())
 	,m_textures()
 	,m_fonts(font)
+	,m_sounds(sounds)
 	,m_scenegraph(ReceiverCategories::kNone)
 	,m_scene_layers()
 	,m_world_bounds(0.f,0.f, m_camera.getSize().x, 3000.f)
@@ -144,6 +146,9 @@ void World::BuildScene()
 	std::unique_ptr<ParticleNode> propellantNode(new ParticleNode(ParticleType::kPropellant, m_textures));
 	m_scene_layers[static_cast<int>(SceneLayers::kLowerAir)]->AttachChild(std::move(propellantNode));
 
+	// Add sound effect node
+	std::unique_ptr<SoundNode> soundNode(new SoundNode(m_sounds));
+	m_scenegraph.AttachChild(std::move(soundNode));
 
 	AddEnemies();
 
@@ -340,6 +345,7 @@ void World::HandleCollisions()
 			//Collision response
 			pickup.Apply(player);
 			pickup.Destroy();
+			player.PlayLocalSound(m_command_queue, SoundEffect::kCollectPickup);
 		}
 		else if (MatchesCategories(pair, ReceiverCategories::kPlayerAircraft, ReceiverCategories::kEnemyProjectile) || MatchesCategories(pair, ReceiverCategories::kEnemyAircraft, ReceiverCategories::kAlliedProjectile))
 		{
@@ -350,4 +356,13 @@ void World::HandleCollisions()
 			projectile.Destroy();
 		}
 	}
+}
+
+void World::UpdateSounds()
+{
+	// Set listener's position to player position
+	m_sounds.SetListenerPosition(m_player_aircraft->GetWorldPosition());
+
+	// Remove unused sounds
+	m_sounds.RemoveStoppedSounds();
 }

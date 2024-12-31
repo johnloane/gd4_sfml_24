@@ -12,7 +12,7 @@ namespace
 	// Sound coordinate system, point of view of a player in front of the screen:
 	// X = left; Y = up; Z = back (out of the screen)
 	const float ListenerZ = 300.f;
-	const float Attenuation = 8.f;
+	const float Attenuation = 1.f;
 	const float MinDistance2D = 200.f;
 	const float MinDistance3D = std::sqrt(MinDistance2D * MinDistance2D + ListenerZ * ListenerZ);
 }
@@ -45,6 +45,7 @@ void SoundPlayer::Play(SoundEffect effect, sf::Vector2f position)
 	sound.setPosition(position.x, -position.y, 0.f);
 	sound.setAttenuation(Attenuation);
 	sound.setMinDistance(MinDistance3D);
+	sound.setVolume(100.f);
 
 	sound.play();
 }

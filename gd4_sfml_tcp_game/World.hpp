@@ -9,13 +9,14 @@
 #include "SpriteNode.hpp"
 #include "CommandQueue.hpp"
 #include "BloomEffect.hpp"
+#include "SoundPlayer.hpp"
 
 #include <array>
 
 class World : private sf::NonCopyable
 {
 public:
-	explicit World(sf::RenderTarget& target, FontHolder& font);
+	explicit World(sf::RenderTarget& target, FontHolder& font, SoundPlayer& sounds);
 	void Update(sf::Time dt);
 	void Draw();
 
@@ -39,8 +40,8 @@ private:
 	void DestroyEntitiesOutsideView();
 	void GuideMissiles();
 
-
 	void HandleCollisions();
+	void UpdateSounds();
 
 
 private:
@@ -61,6 +62,7 @@ private:
 	sf::View m_camera;
 	TextureHolder m_textures;
 	FontHolder& m_fonts;
+	SoundPlayer& m_sounds;
 	SceneNode m_scenegraph;
 	std::array<SceneNode*, static_cast<int>(SceneLayers::kLayerCount)> m_scene_layers;
 	sf::FloatRect m_world_bounds;
