@@ -157,6 +157,7 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SettingsState.cpp" />
+    <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="SpriteNode.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateStack.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Application.hpp" />
     <ClInclude Include="BloomEffect.hpp" />
     <ClInclude Include="Button.hpp" />
+    <ClInclude Include="ButtonType.hpp" />
     <ClInclude Include="Command.hpp" />
     <ClInclude Include="CommandQueue.hpp" />
     <ClInclude Include="Component.hpp" />
@@ -209,6 +211,8 @@
     <ClInclude Include="SceneNode.hpp" />
     <ClInclude Include="SettingsState.hpp" />
     <ClInclude Include="ShaderTypes.hpp" />
+    <ClInclude Include="SoundEffect.hpp" />
+    <ClInclude Include="SoundPlayer.hpp" />
     <ClInclude Include="SpriteNode.hpp" />
     <ClInclude Include="StackAction.hpp" />
     <ClInclude Include="State.hpp" />
