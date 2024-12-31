@@ -4,6 +4,7 @@
 #include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "StateStack.hpp"
+#include "MusicPlayer.hpp"
 
 class Application
 {
@@ -26,5 +27,7 @@ private:
 
 	StateStack m_stack;
 	static const sf::Time kTimePerFrame;
+
+	MusicPlayer m_music;
 };
 
