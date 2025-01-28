@@ -48,6 +48,7 @@ void World::Update(sf::Time dt)
 
 	m_scenegraph.Update(dt, m_command_queue);
 	AdaptPlayerPosition();
+	UpdateSounds();
 }
 
 void World::Draw()
@@ -64,6 +65,9 @@ void World::Draw()
 	{
 		m_target.setView(m_camera);
 		m_target.draw(m_scenegraph);
+
+
+
 	}
 }
 
