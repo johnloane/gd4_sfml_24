@@ -25,7 +25,7 @@ private:
 		RemotePeer();
 		sf::TcpSocket m_socket;
 		sf::Time m_last_packet_time;
-		std::vector<sf::Int8> m_aircraft_identifiers;
+		std::vector<sf::Int32> m_aircraft_identifiers;
 		bool m_ready;
 		bool m_timed_out;
 	};
@@ -33,8 +33,8 @@ private:
 	struct AircraftInfo
 	{
 		sf::Vector2f m_position;
-		sf::Int8 m_hitpoints;
-		sf::Int8 m_missile_ammo;
+		sf::Int32 m_hitpoints;
+		sf::Int32 m_missile_ammo;
 		std::map<sf::Int32, bool> m_realtime_actions;
 	};
 
@@ -72,10 +72,10 @@ private:
 	float m_battlefield_scrollspeed;
 
 	std::size_t m_aircraft_count;
-	std::map<sf::Int8, AircraftInfo> m_aircraft_info;
+	std::map<sf::Int32, AircraftInfo> m_aircraft_info;
 
 	std::vector<PeerPtr> m_peers;
-	sf::Int8 m_aircraft_identifier_counter;
+	sf::Int32 m_aircraft_identifier_counter;
 	bool m_waiting_thread_end;
 
 	sf::Time m_last_spawn_time;

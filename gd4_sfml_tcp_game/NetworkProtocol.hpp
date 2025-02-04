@@ -1,5 +1,5 @@
 #pragma once
-const unsigned short SERVER_PORT = 50000;
+const unsigned short SERVER_PORT = 50000; // Greater than 49151, the dynamic port range
 
 namespace Server
 {
@@ -31,5 +31,25 @@ namespace Client
 		kStateUpdate, //sf::Int32 with number of local aircraft, for each aircraft send sf::Int32 identifier, two floats for position, health and ammo 
 		kGameEvent, //This is for explosions
 		kQuit
+	};
+}
+
+namespace GameActions
+{
+	enum Type
+	{
+		kEnemyExplode
+	};
+
+	struct Action
+	{
+		Action() = default;
+		Action(Type type, sf::Vector2f position) :type(type), position(position)
+		{
+
+		}
+
+		Type type;
+		sf::Vector2f position;
 	};
 }
